@@ -1,16 +1,19 @@
 package com.example.overflow.question;
 
 import com.example.overflow.auditingEntity.AuditingEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+
+
 @Entity
 @Table(name = "Question")
-@Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@Builder
 public class Question extends AuditingEntity {
 
     @Id
@@ -34,6 +37,9 @@ public class Question extends AuditingEntity {
     // @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     // private List<Answer> answers = new ArrayList<>();
     // **//
+
+    private Integer memberId;
+
 
     public void addViews(){
         this.questionViews++;
