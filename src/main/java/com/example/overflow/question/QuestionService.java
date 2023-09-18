@@ -2,7 +2,6 @@ package com.example.overflow.question;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class QuestionService {
@@ -13,7 +12,8 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-    public Question createQuestion(Integer memberId, Question question, List<String> tagNames) {
+    public Question createQuestion(Question question) {
         return questionRepository.save(question);
     }
+
 }

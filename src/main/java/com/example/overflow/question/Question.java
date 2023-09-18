@@ -9,11 +9,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Question")
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class Question extends AuditingEntity {
 
     @Id
@@ -39,6 +38,7 @@ public class Question extends AuditingEntity {
     // **//
 
     private Integer memberId;
+
 
 
     public void addViews(){
