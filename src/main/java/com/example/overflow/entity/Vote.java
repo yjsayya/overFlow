@@ -1,4 +1,4 @@
-package org.example.wow;
+package com.example.overflow.entity;
 
 import lombok.Getter;
 

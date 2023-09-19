@@ -1,8 +1,9 @@
-package org.example.wow;
+package com.example.overflow.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,8 +14,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(indexes = {
         @Index(columnList = "email"),
-        @Index(columnList = "name"),
+        @Index(columnList = "userName"),
 })
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Member {
 
@@ -23,17 +25,17 @@ public class Member {
     private Integer id;
 
 
-    @Setter @Column(nullable = false, length = 50)
+    @Setter @Column(nullable = false, length = 255)
     private String email;
 
-    @Setter @Column(nullable = false, length = 50)
+    @Setter @Column(nullable = false, length = 255)
     @JsonIgnore
     private String password;
 
-    @Setter @Column(nullable = false, length = 50)
-    private String name;
+    @Setter @Column(nullable = false, length = 255)
+    private String userName;
 
-    @Setter @Column(length = 50)
+    @Setter @Column(length = 255)
     private String phone;
 
     @Setter @Column(name="image_url")
@@ -54,13 +56,11 @@ public class Member {
 //    private List<Vote> voteList = new ArrayList<>();
 
 
-    @Column(name="is_deleted", nullable = false, length = 10)
+    @Column(name="is_deleted", length = 10)
     private String isDeleted;
 
     @CreatedDate @Column(name="created_at")
     private LocalDate createdAt;
-
-
 
 
 }
