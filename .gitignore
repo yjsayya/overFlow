@@ -237,4 +237,6 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,intellij+all,macos,windows
 
-src/main/resources/application.yaml
+# YAML files
+*.yaml
+>>>>>>> d6762a47929c5c873cb9c00fd93190c10a8d34d9
