@@ -17,7 +17,7 @@ public class QuestionResponseDto {
     private String title;
     private String content;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updatedAt;
     private List<String> tagNames;
     private int questionViews;
     private int questionVotes;

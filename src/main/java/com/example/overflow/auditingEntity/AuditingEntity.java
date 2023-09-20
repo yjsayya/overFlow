@@ -33,7 +33,7 @@ public class AuditingEntity {
     private String createdBy;
 
     @LastModifiedDate
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
