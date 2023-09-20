@@ -1,4 +1,4 @@
-package com.example.overflow.response;
+package com.example.overflow.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
