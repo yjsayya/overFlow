@@ -7,6 +7,10 @@ import com.example.overflow.entity.Question;
 import com.example.overflow.repository.MemberRepository;
 import com.example.overflow.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,10 +52,48 @@ public class QuestionService {
         return questionRepository.save(findQuestion);
     }
 
+    @Transactional(readOnly = true)
     public Question findQuestion(Integer questionId) {
         Question question = findVerifiedQuestion(questionId);
         question.setQuestionViews((question.getQuestionViews() +1)); // 조회수 +1
         return question;
+    }
+
+    //해당 게시글이 존재하는지 체크
+    public Question findVerifiedQuestion(Integer id){
+        Optional<Question> optionalQuestion = questionRepository.findById(id);
+        if (optionalQuestion.isEmpty()){
+            throw new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND);
+        }
+        return optionalQuestion.get();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Question> findQuestions(int page, int size, String order) {
+        Pageable pageable;
+        if (order.equals("newest")) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        } else if (order.equals("answered")) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "answerCount"));
+        } else if (order.equals("unanswered")) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        } else if (order.equals("voteCount")) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "questionVotes"));
+        }else {
+            throw new IllegalArgumentException("Invalid sort parameter");
+        }
+
+        Page<Question> questionPage;
+        if (order.equals("unanswered")) {
+            questionPage = questionRepository.findAllByAnswerCount(0, pageable);
+        } else if (order.equals("answered")) {
+            questionPage = questionRepository.findAllQuestionsAnswered(pageable);
+        } else if (order.equals("voteCount")) {
+            questionPage = questionRepository.findAllByOrderByQuestionVotesDesc(pageable);
+        }else {
+            questionPage = questionRepository.findAll(pageable);
+        }
+        return questionPage;
     }
 
     public void deleteQuestion(Integer questionId, Integer memberId) {
@@ -63,15 +105,6 @@ public class QuestionService {
         }
 
         questionRepository.delete(question);
-    }
-
-    //해당 게시글이 존재하는지 체크
-    public Question findVerifiedQuestion(Integer id){
-        Optional<Question> optionalQuestion = questionRepository.findById(id);
-        if (optionalQuestion.isEmpty()){
-            throw new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND);
-        }
-        return optionalQuestion.get();
     }
 
 }

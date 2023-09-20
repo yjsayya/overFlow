@@ -2,11 +2,13 @@ package com.example.overflow.controller;
 
 import com.example.overflow.dto.request.QuestionPatchDto;
 import com.example.overflow.dto.request.QuestionPostDto;
+import com.example.overflow.dto.response.MultiResponseDto;
 import com.example.overflow.dto.response.QuestionResponseDto;
 import com.example.overflow.entity.Question;
 import com.example.overflow.mapper.QuestionMapper;
 import com.example.overflow.service.QuestionService;
 import com.example.overflow.utils.UriCreator;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +59,17 @@ public class QuestionController {
         Question question = questionService.findQuestion(questionId);
         return new ResponseEntity(mapper.questionToResponseDto(question), HttpStatus.OK);
     }
+
+    @GetMapping
+    public ResponseEntity getQuestions(@Positive @RequestParam int page,
+                                       @Positive @RequestParam(defaultValue = "5") int size,
+                                       @RequestParam(defaultValue = "newest") String order) {
+        Page<Question> pageQuestions = questionService.findQuestions(page - 1, size, order);
+        List<Question> questions = pageQuestions.getContent();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(mapper.questionListToResponseDtos(questions), pageQuestions), HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/{questionId}")
     public ResponseEntity<?> deleteQuestion(@PathVariable("questionId") @Positive Integer questionId,
