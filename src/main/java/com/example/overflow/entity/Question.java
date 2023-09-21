@@ -52,7 +52,6 @@ public class Question {
 //    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 //    private List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
 
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

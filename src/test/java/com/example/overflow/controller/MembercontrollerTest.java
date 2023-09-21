@@ -107,6 +107,7 @@ public class MembercontrollerTest {
         String email = "email";
         String password = "password";
 
+        // mocking
         when(memberService.login(email, password)).thenThrow(new OverflowApplicationException(ErrorCode.INVALID_PASSWORD,ErrorCode.INVALID_PASSWORD.getMessage()));
 
         mockMvc.perform(post("/member/login")

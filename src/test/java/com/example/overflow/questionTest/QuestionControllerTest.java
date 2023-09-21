@@ -48,7 +48,6 @@ public class QuestionControllerTest {
         given(questionService.createQuestion(any(Question.class))).willReturn(question);
 
         String content = gson.toJson(requestBody);
-
         // when
         ResultActions actions = mockMvc.perform(
                 post("/questions/{memberId}", 1)
@@ -56,7 +55,6 @@ public class QuestionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
         );
-
         // then
         actions
                 .andExpect(status().isCreated())

@@ -12,9 +12,6 @@ public class MemberJoinResponseDto {
     private String userName;
 
     public static MemberJoinResponseDto entityToDto(Member member) {
-        if (member == null)
-            throw new IllegalArgumentException();
-
         return new MemberJoinResponseDto(
                 member.getId(),
                 member.getUserName()

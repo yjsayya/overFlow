@@ -29,8 +29,7 @@ public class QuestionDto {
         private Integer questionId;
         private String title;
         private String content;
-
-
     }
+
 
 }
