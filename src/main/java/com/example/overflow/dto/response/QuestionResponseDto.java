@@ -21,4 +21,5 @@ public class QuestionResponseDto {
     private List<String> tagNames;
     private int questionViews;
     private int questionVotes;
+    private int answerCount;
 }

@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Optional<Question> findById(Integer Id);
 
@@ -15,7 +17,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     Page<Question> findAllByOrderByQuestionVotesDesc(Pageable pageable);
 
-    @Query(value = "select q from Question q where q.answerCount > 0")
+    @Query(value = "select q from Question q where size(q.answerList) > 0")
     Page<Question> findAllQuestionsAnswered(Pageable pageable);
 
 }

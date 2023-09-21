@@ -1,5 +1,6 @@
 package com.example.overflow.entity;
 
+import com.example.overflow.auditingEntity.AuditingEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,7 +21,7 @@ import java.util.List;
 })
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Member {
+public class Member extends AuditingEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
@@ -62,9 +63,6 @@ public class Member {
 
     @Column(name="is_deleted", length = 10)
     private String isDeleted;
-
-    @CreatedDate @Column(name="created_at")
-    private LocalDate createdAt;
 
 
 }

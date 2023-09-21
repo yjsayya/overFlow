@@ -39,6 +39,9 @@ public class Question extends AuditingEntity {
     @Column(nullable = false)
     private int questionVotes; //투표수
 
+    @Column(nullable = false)
+    private int answerCount = 0; // 답변 개수
+
     // 연관 관계 메서드
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
@@ -50,8 +53,8 @@ public class Question extends AuditingEntity {
 //    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 //    private List<Vote> voteList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-//    private List<Answer> answerList = new ArrayList<>();
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Answer> answerList = new ArrayList<>();
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
@@ -74,5 +77,12 @@ public class Question extends AuditingEntity {
         return Objects.hash(questionId);
     }
 
+    public void addAnswersCount() {
+        answerCount += 1;
+    }
+
+    public void subtractAnswersCount() {
+        answerCount -= 1;
+    }
 
 }
