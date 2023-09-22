@@ -5,9 +5,11 @@ import com.example.overflow.dto.request.QuestionPostDto;
 import com.example.overflow.dto.response.MultiResponseDto;
 import com.example.overflow.dto.response.QuestionResponseDto;
 import com.example.overflow.entity.Question;
+import com.example.overflow.entity.TagOnQuestion;
 import com.example.overflow.mapper.QuestionMapper;
 import com.example.overflow.service.QuestionService;
 import com.example.overflow.utils.UriCreator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +22,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/questions")
+@RequiredArgsConstructor
 public class QuestionController {
 
     private final static String QUESTION_URL = "questions";
-    private QuestionService questionService;
-    private QuestionMapper mapper;
-
-    public QuestionController(QuestionService questionService, QuestionMapper mapper) {
-        this.questionService = questionService;
-        this.mapper = mapper;
-    }
+    private final QuestionService questionService;
+    private final QuestionMapper mapper;
 
     @PostMapping("/{memberId}")
     public ResponseEntity postQuestion(@PathVariable("memberId") @Positive Integer memberId,

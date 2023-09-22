@@ -5,19 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import javax.validation.constraints.NotBlank;
-import java.util.List;
-
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionPostDto {
+public class TagPostDto {
     @NotBlank
-    private String title;
+    private String tagName;
     private String content;
-    private List<String> tagNames;
+    private Integer tagMentionCount = 0;
 
 }
