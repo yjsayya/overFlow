@@ -4,8 +4,11 @@ import com.example.overflow.advice.BusinessLogicException;
 import com.example.overflow.advice.ExceptionCode;
 import com.example.overflow.entity.Member;
 import com.example.overflow.entity.Question;
+import com.example.overflow.entity.Tag;
+import com.example.overflow.entity.TagOnQuestion;
 import com.example.overflow.repository.MemberRepository;
 import com.example.overflow.repository.QuestionRepository;
+import com.example.overflow.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.data.domain.Page;
@@ -15,8 +18,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -27,16 +32,56 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final TagRepository tagRepository;
 
     public Question createQuestion(Integer member_id, Question question, List<String> tagNames) {
+        // 맴버가 존재하는지 검사하고 없으면 에러
         Optional<Member> optionalMember = memberRepository.findById(member_id);
-        if (optionalMember.isEmpty()){
+        if (optionalMember.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
         question.setMember(optionalMember.get());
 
-        return questionRepository.save(question);
+        // 태그가 존재하는지 검사하고 매핑 및 저장
+        List<Tag> tags = new ArrayList<>();
+        for (String tagName : tagNames) {
+            Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
+            Tag tag;
+            if (optionalTag.isPresent()) {
+                tag = optionalTag.get();
+            } else if(optionalTag.isEmpty()){
+                throw new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND);
+            }
+        }
+
+        // 태그맨션수 +1 및 태그와 질문 매핑
+        List<TagOnQuestion> tagQuestions = new ArrayList<>();
+        for (Tag tag : tags) {
+            Tag.addMentionCount(tag);
+            TagOnQuestion tagQuestion = new TagOnQuestion();
+            tagQuestion.setTag(tag);
+            tagQuestion.setQuestion(question);
+            tagQuestions.add(tagQuestion);
+        }
+        question.setTagOnQuestions(tagQuestions);
+
+        questionRepository.save(question);
+
+        return question;
+
     }
+
+//    public Question createQuestion(Integer member_id, Question question, List<String> tagNames) {
+//        Optional<Member> optionalMember = memberRepository.findById(member_id);
+//        if (optionalMember.isEmpty()){
+//            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+//        }
+//        question.setMember(optionalMember.get());
+//
+//        return questionRepository.save(question);
+//    }
+
+
 
     public Question updateQuestion(Question question, Integer memberId) {
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());

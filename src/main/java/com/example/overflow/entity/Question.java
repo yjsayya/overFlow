@@ -27,10 +27,10 @@ public class Question extends AuditingEntity {
     @Column(name="question_id")
     private Integer questionId;
 
-    @Setter @Column(nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Setter @Column(nullable = false, length = 10_000)
+    @Column(nullable = false, length = 10_000)
     private String content;
 
     @Column(nullable = false)
@@ -39,8 +39,8 @@ public class Question extends AuditingEntity {
     @Column(nullable = false)
     private int questionVotes; //투표수
 
-    @Column(nullable = false)
-    private int answerCount = 0; // 답변 개수
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int answerCount; // 답변 개수
 
     // 연관 관계 메서드
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
