@@ -1,4 +1,4 @@
-package com.example.overflow.util;
+package com.example.overflow.config.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

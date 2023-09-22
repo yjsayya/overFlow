@@ -1,10 +1,10 @@
 package com.example.overflow.controller;
 
+import com.example.overflow.advice.BusinessLogicException;
+import com.example.overflow.advice.ExceptionCode;
 import com.example.overflow.dto.request.MemberJoinRequestDto;
 import com.example.overflow.dto.request.MemberLoginRequestDto;
 import com.example.overflow.entity.Member;
-import com.example.overflow.error.ErrorCode;
-import com.example.overflow.error.OverflowApplicationException;
 import com.example.overflow.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -61,13 +61,13 @@ public class MembercontrollerTest {
         String userName = "username";
         String phone = "phone";
 
-        when(memberService.join(email,password,userName,phone)).thenThrow(new OverflowApplicationException(ErrorCode.DUPLICATED_USER_NAME,ErrorCode.DUPLICATED_USER_NAME.getMessage()));
+        when(memberService.join(email,password,userName,phone)).thenThrow(new BusinessLogicException(ExceptionCode.MEMBER_EXISTS));
 
         mockMvc.perform(post("/member/join")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new MemberJoinRequestDto("name", "password","username","phone"))))
                 .andDo(print())
-                .andExpect(status().is(ErrorCode.DUPLICATED_USER_NAME.getStatus().value()));
+                .andExpect(status().is(ExceptionCode.MEMBER_EXISTS.getStatus()));
     }
 
 
@@ -92,13 +92,13 @@ public class MembercontrollerTest {
         String email = "email";
         String password = "password";
 
-        when(memberService.login(email, password)).thenThrow(new OverflowApplicationException(ErrorCode.USER_NOT_FOUND,ErrorCode.USER_NOT_FOUND.getMessage()));
+        when(memberService.login(email, password)).thenThrow(new BusinessLogicException(ExceptionCode.MEMBER_EXISTS));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new MemberLoginRequestDto("email", "password"))))
                 .andDo(print())
-                .andExpect(status().is(ErrorCode.USER_NOT_FOUND.getStatus().value()));
+                .andExpect(status().is(ExceptionCode.MEMBER_NOT_FOUND.getStatus()));
     }
 
     @Test
@@ -108,13 +108,13 @@ public class MembercontrollerTest {
         String password = "password";
 
         // mocking
-        when(memberService.login(email, password)).thenThrow(new OverflowApplicationException(ErrorCode.INVALID_PASSWORD,ErrorCode.INVALID_PASSWORD.getMessage()));
+        when(memberService.login(email, password)).thenThrow(new BusinessLogicException(ExceptionCode.INVALID_PASSWORD));
 
         mockMvc.perform(post("/member/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new MemberLoginRequestDto("email", "password"))))
                 .andDo(print())
-                .andExpect(status().is(ErrorCode.INVALID_PASSWORD.getStatus().value()));
+                .andExpect(status().is(ExceptionCode.INVALID_PASSWORD.getStatus()));
     }
 
 
