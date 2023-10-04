@@ -21,8 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.google.gson.Gson;
 import org.springframework.test.web.servlet.ResultActions;
 
+import javax.persistence.Column;
 import java.util.Collections;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,11 +43,9 @@ public class QuestionControllerTest {
     private QuestionMapper questionMapper;
     @MockBean
     private QuestionService questionService;
-    @Autowired
-    private MemberRepository memberRepository;
 
     @Test
-    public void postQuestionTest() throws Exception {
+    void postQuestionTest() throws Exception {
         // Given
         QuestionPostDto postDto = new QuestionPostDto("Sample Title", "Sample Content", Collections.singletonList("Java"));
 
@@ -59,6 +59,18 @@ public class QuestionControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", startsWith("/questions/")));
     }
+
+//    @Test
+//    void getQuestionTest() throws Exception {
+//        //질문등록
+//        final Integer QuestionId = 1;
+//        //질문조회
+//        final GetQuestionResponse response = questionService.getQuestion(questionId);
+//        //응답검증
+//        assertThat(response).inNotNull();
+//    }
+
+
 
 
 
