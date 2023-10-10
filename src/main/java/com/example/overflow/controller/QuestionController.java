@@ -5,7 +5,6 @@ import com.example.overflow.dto.request.QuestionPostDto;
 import com.example.overflow.dto.response.MultiResponseDto;
 import com.example.overflow.dto.response.QuestionResponseDto;
 import com.example.overflow.entity.Question;
-import com.example.overflow.entity.TagOnQuestion;
 import com.example.overflow.mapper.QuestionMapper;
 import com.example.overflow.service.QuestionService;
 import com.example.overflow.utils.UriCreator;
@@ -24,7 +23,6 @@ import java.util.List;
 @RequestMapping("/questions")
 @RequiredArgsConstructor
 public class QuestionController {
-
     private final static String QUESTION_URL = "questions";
     private final QuestionService questionService;
     private final QuestionMapper mapper;
@@ -37,6 +35,7 @@ public class QuestionController {
         Question createdQuestion = questionService.createQuestion(memberId, question, tagNames);
 
         QuestionResponseDto response = mapper.questionToResponseDto(createdQuestion);
+        response.setTagNames(tagNames);
 
         URI location = UriCreator.createUri(QUESTION_URL, createdQuestion.getQuestionId());
         return ResponseEntity.created(location).body(response);
@@ -45,7 +44,6 @@ public class QuestionController {
     @PatchMapping("/{memberId}")
     public ResponseEntity patchQuestion(@PathVariable("memberId") Integer memberId,
                                         @Valid @RequestBody QuestionPatchDto requestBody) {
-
         Question question = mapper.questionPatchDtoToQuestion(requestBody);
         Question updateQuestion = questionService.updateQuestion(question, memberId);
 
@@ -55,7 +53,8 @@ public class QuestionController {
     @GetMapping("/{questionId}")
     public ResponseEntity getQuestion(@PathVariable("questionId") @Positive Integer questionId) {
         Question question = questionService.findQuestion(questionId);
-        return new ResponseEntity(mapper.questionToResponseDto(question), HttpStatus.OK);
+
+        return new ResponseEntity<>(mapper.questionToResponseDto(question), HttpStatus.OK);
     }
 
     @GetMapping
@@ -73,6 +72,7 @@ public class QuestionController {
     public ResponseEntity<?> deleteQuestion(@PathVariable("questionId") @Positive Integer questionId,
                                             @RequestParam("memberId") @Positive Integer memberId) {
         questionService.deleteQuestion(questionId, memberId);
+
         return ResponseEntity.ok().build();
     }
 

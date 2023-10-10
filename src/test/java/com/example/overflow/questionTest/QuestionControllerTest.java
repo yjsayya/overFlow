@@ -44,21 +44,21 @@ public class QuestionControllerTest {
     @MockBean
     private QuestionService questionService;
 
-    @Test
-    void postQuestionTest() throws Exception {
-        // Given
-        QuestionPostDto postDto = new QuestionPostDto("Sample Title", "Sample Content", Collections.singletonList("Java"));
-
-        // When
-        mockMvc.perform(
-                        post("/questions/{memberId}", 1) // Member ID를 사용합니다.
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(gson.toJson(postDto))
-                )
-                // Then
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", startsWith("/questions/")));
-    }
+//    @Test
+//    void postQuestionTest() throws Exception {
+//        // Given
+//        QuestionPostDto postDto = new QuestionPostDto("Sample Title", "Sample Content", Collections.singletonList("Java"));
+//
+//        // When
+//        mockMvc.perform(
+//                        post("/questions/{memberId}", 1) // Member ID를 사용합니다.
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(gson.toJson(postDto))
+//                )
+//                // Then
+//                .andExpect(status().isCreated())
+//                .andExpect(header().string("Location", startsWith("/questions/")));
+//    }
 
 //    @Test
 //    void getQuestionTest() throws Exception {

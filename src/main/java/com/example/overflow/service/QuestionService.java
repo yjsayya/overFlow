@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,52 +32,38 @@ public class QuestionService {
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
 
-    public Question createQuestion(Integer member_id, Question question, List<String> tagNames) {
+    public Question createQuestion(Integer memberId, Question question, List<String> tagNames) {
         // 맴버가 존재하는지 검사하고 없으면 에러
-        Optional<Member> optionalMember = memberRepository.findById(member_id);
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
         if (optionalMember.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
         question.setMember(optionalMember.get());
 
-        // 태그가 존재하는지 검사하고 매핑 및 저장
+        // 태그를 검사하고 매핑
         List<Tag> tags = new ArrayList<>();
         for (String tagName : tagNames) {
             Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
-            Tag tag;
             if (optionalTag.isPresent()) {
-                tag = optionalTag.get();
-            } else if(optionalTag.isEmpty()){
+                tags.add(optionalTag.get());
+            } else {
+                // 태그가 존재하지 않으면 에러를 반환
                 throw new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND);
             }
         }
 
-        // 태그맨션수 +1 및 태그와 질문 매핑
-        List<TagOnQuestion> tagQuestions = new ArrayList<>();
+        // 질문과 연관된 태그 목록을 설정합니다.
+        List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
         for (Tag tag : tags) {
-            Tag.addMentionCount(tag);
-            TagOnQuestion tagQuestion = new TagOnQuestion();
-            tagQuestion.setTag(tag);
-            tagQuestion.setQuestion(question);
-            tagQuestions.add(tagQuestion);
+            TagOnQuestion tagOnQuestion = new TagOnQuestion();
+            tagOnQuestion.setTag(tag);
+            tagOnQuestion.setQuestion(question);
+            tagOnQuestions.add(tagOnQuestion);
         }
-        question.setTagOnQuestions(tagQuestions);
+        question.setTagOnQuestions(tagOnQuestions);
 
-        questionRepository.save(question);
-
-        return question;
-
+        return questionRepository.save(question);
     }
-
-//    public Question createQuestion(Integer member_id, Question question, List<String> tagNames) {
-//        Optional<Member> optionalMember = memberRepository.findById(member_id);
-//        if (optionalMember.isEmpty()){
-//            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-//        }
-//        question.setMember(optionalMember.get());
-//
-//        return questionRepository.save(question);
-//    }
 
 
 
@@ -90,18 +75,10 @@ public class QuestionService {
 
         Optional.ofNullable(question.getTitle())
                 .ifPresent(questionTitle -> findQuestion.setTitle(questionTitle));
-        //질문 문제 수정
         Optional.ofNullable(question.getContent())
                 .ifPresent(questionContent -> findQuestion.setContent(questionContent));
 
         return questionRepository.save(findQuestion);
-    }
-
-    @Transactional(readOnly = true)
-    public Question findQuestion(Integer questionId) {
-        Question question = findVerifiedQuestion(questionId);
-        question.setQuestionViews((question.getQuestionViews() +1)); // 조회수 +1
-        return question;
     }
 
     //해당 게시글이 존재하는지 체크
@@ -111,6 +88,13 @@ public class QuestionService {
             throw new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND);
         }
         return optionalQuestion.get();
+    }
+
+    @Transactional(readOnly = true)
+    public Question findQuestion(Integer questionId) {
+        Question question = findVerifiedQuestion(questionId);
+        question.setQuestionViews((question.getQuestionViews() +1)); // 조회수 +1
+        return question;
     }
 
     @Transactional(readOnly = true)
@@ -124,7 +108,7 @@ public class QuestionService {
             pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         } else if (order.equals("voteCount")) {
             pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "questionVotes"));
-        }else {
+        } else {
             throw new IllegalArgumentException("Invalid sort parameter");
         }
 
