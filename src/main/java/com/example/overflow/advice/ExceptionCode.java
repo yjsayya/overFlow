@@ -11,6 +11,7 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(409, "Member exists"),
     INVALID_PASSWORD(401, "Password is Invalid"),
+    INVALID_(401, "You are not authorized"),
 
     // Question
     QUESTION_NOT_FOUND(404, "Question not found"),
@@ -30,6 +31,9 @@ public enum ExceptionCode {
     UN_AUTHORIZED(404, "Only the author can delete"),
     VOTE_NOT_FOUNT(404,"Vote not found"),
     ALREADY_EXIST_VOTE(404,"Already exist vote"),
+
+    // Comment
+    COMMENT_NOT_FOUND(404, "Comment not found"),
 
 
     INTERNAL_SERVER_ERROR(500, "Internal server error");

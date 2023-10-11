@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TagPostDto {
+
     @NotBlank
     private String tagName;
     private String content;

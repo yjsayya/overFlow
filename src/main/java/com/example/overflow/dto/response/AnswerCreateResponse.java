@@ -12,7 +12,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnswerResponseDto {
+public class AnswerCreateResponse {
 
     private Integer answerId;
     private String content;

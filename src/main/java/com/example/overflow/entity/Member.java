@@ -49,14 +49,14 @@ public class Member extends AuditingEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Question> questionList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-//    private List<Comment> commentList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-//    private List<Answer> answerList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-//    private List<Vote> voteList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Answer> answerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Vote> voteList = new ArrayList<>();
 
 
 

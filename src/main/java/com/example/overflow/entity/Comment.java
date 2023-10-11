@@ -3,15 +3,9 @@ package com.example.overflow.entity;
 import com.example.overflow.auditingEntity.AuditingEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -48,7 +42,7 @@ public class Comment extends AuditingEntity {
         this.content = content;
     }
 
-    public Comment of(String content) {
+    public static Comment of(String content) {
         return new Comment(content);
     }
 
