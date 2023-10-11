@@ -50,8 +50,8 @@ public class Question extends AuditingEntity {
 //    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 //    private List<Comment> commentList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-//    private List<Vote> voteList = new ArrayList<>();
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Vote> votes = new ArrayList<>();
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answerList = new ArrayList<>();

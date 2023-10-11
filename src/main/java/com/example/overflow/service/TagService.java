@@ -17,6 +17,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class TagService {
+
     private final TagRepository tagRepository;
     public Tag createTag(Tag tag) {
         Optional<Tag> optionalTag = tagRepository.findByTagName(tag.getTagName());

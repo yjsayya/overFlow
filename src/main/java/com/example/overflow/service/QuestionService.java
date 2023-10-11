@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -42,12 +41,15 @@ public class QuestionService {
 
         // 태그를 검사하고 매핑
         List<Tag> tags = new ArrayList<>();
+
         for (String tagName : tagNames) {
             Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
             if (optionalTag.isPresent()) {
-                tags.add(optionalTag.get());
+                Tag tag = optionalTag.get();
+                tag.setTagMentionCount(tag.getTagMentionCount() + 1);
+                tagRepository.save(tag);
+                tags.add(tag);
             } else {
-                // 태그가 존재하지 않으면 에러를 반환
                 throw new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND);
             }
         }

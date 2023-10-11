@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @Table(indexes = {
         @Index(columnList = "tagName"),
         @Index(columnList = "content"),
@@ -26,7 +25,7 @@ public class Tag {
     @Setter @Column(nullable = false)
     private String content;
 
-    @Column(columnDefinition = "INT DEFAULT 0")
+    @Setter @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private Integer tagMentionCount;
 
     // 연관 관계 매서드
