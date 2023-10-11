@@ -1,0 +1,15 @@
+jwt:
+  secret-key: back-end-project-overflow-secret-key
+  # 30 days
+  token.expired-time-ms: 2592000000
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/stack_overflow
+    username: root
+    password: wndehd
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
