@@ -10,7 +10,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+<<<<<<< HEAD
 
+=======
+import javax.persistence.Column;
+import java.util.Collections;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.Matchers.startsWith;
+import static org.mockito.ArgumentMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+>>>>>>> 4797cab5a48b529b3e3745102ba21b053f600d49
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,10 +39,9 @@ public class QuestionControllerTest {
 
     @MockBean
     private QuestionService questionService;
-    @Autowired
-    private MemberRepository memberRepository;
 
 //    @Test
+<<<<<<< HEAD
 //    public void postQuestionTest() throws Exception {
 //        QuestionPostDto requestDto = new QuestionPostDto();
 //        requestDto.setTitle("Sample Title");
@@ -56,6 +67,9 @@ public class QuestionControllerTest {
 //    }
 //    @Test
 //    public void postQuestionTest() throws Exception {
+=======
+//    void postQuestionTest() throws Exception {
+>>>>>>> 4797cab5a48b529b3e3745102ba21b053f600d49
 //        // Given
 //        QuestionPostDto postDto = new QuestionPostDto("Sample Title", "Sample Content", Collections.singletonList("Java"));
 //
@@ -69,6 +83,21 @@ public class QuestionControllerTest {
 //                .andExpect(status().isCreated())
 //                .andExpect(header().string("Location", startsWith("/questions/")));
 //    }
+<<<<<<< HEAD
+=======
+
+//    @Test
+//    void getQuestionTest() throws Exception {
+//        //질문등록
+//        final Integer QuestionId = 1;
+//        //질문조회
+//        final GetQuestionResponse response = questionService.getQuestion(questionId);
+//        //응답검증
+//        assertThat(response).inNotNull();
+//    }
+
+
+>>>>>>> 4797cab5a48b529b3e3745102ba21b053f600d49
 
 
 

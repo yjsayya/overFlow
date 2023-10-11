@@ -21,12 +21,11 @@ public class TagOnQuestion {
 
     // 연관관계 메서드
     @ManyToOne
-    @JoinColumn(name="tag_id")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
     @ManyToOne
-    @JoinColumn(name="question_id")
+    @JoinColumn(name = "question_id")
     private Question question;
-
 
 }

@@ -23,9 +23,16 @@ public class QuestionResponseDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<Tag> tags;
+    private String createdBy;
+    private String updatedBy;
+    private List<String> tagNames;
     private int questionViews;
     private int questionVotes;
     private int answerCount;
+
+
+    public void setTagNames(List<String> tagNames) {
+        this.tagNames = tagNames;
+    }
 
 }

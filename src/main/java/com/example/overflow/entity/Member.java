@@ -56,8 +56,7 @@ public class Member extends AuditingEntity {
     private List<Answer> answerList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Vote> voteList = new ArrayList<>();
-
+    private List<Vote> votes = new ArrayList<>();
 
 
 
