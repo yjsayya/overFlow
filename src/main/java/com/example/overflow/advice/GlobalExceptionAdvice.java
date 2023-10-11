@@ -62,6 +62,8 @@ public class GlobalExceptionAdvice {
 
         return ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED);
     }
+
+
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, MissingServletRequestParameterException.class,
             HttpMessageNotReadableException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -78,6 +80,7 @@ public class GlobalExceptionAdvice {
 
         return ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(RuntimeException.class) //회원가입 오류시 사용
     public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e) {
         log.error("RuntimeException: {}", e);

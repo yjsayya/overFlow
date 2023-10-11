@@ -15,6 +15,7 @@ public class QuestionPatchDto {
     @NotNull
     private Integer questionId;
 
+
     @NotBlank @Size(min = 10, max = 255)
     private String title;
 
@@ -22,4 +23,6 @@ public class QuestionPatchDto {
     private String content;
 
     private List<String> tagNames;
+
+
 }

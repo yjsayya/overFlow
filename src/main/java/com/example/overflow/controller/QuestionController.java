@@ -67,7 +67,6 @@ public class QuestionController {
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.questionListToResponseDtos(questions), pageQuestions), HttpStatus.OK);
     }
 
-
     @DeleteMapping("/{questionId}")
     public ResponseEntity<?> deleteQuestion(@PathVariable("questionId") @Positive Integer questionId,
                                             @RequestParam("memberId") @Positive Integer memberId) {
@@ -75,5 +74,6 @@ public class QuestionController {
 
         return ResponseEntity.ok().build();
     }
+
 
 }
