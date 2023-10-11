@@ -22,26 +22,28 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .csrf().disable();
-    }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//                .antMatchers("/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .csrf().disable();
+//    }
 
-    // @Override
-    protected void configure1(HttpSecurity http) throws Exception {
+     @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests() // request를 인가하겠다
                 // join과 login은 모두 허용
                 .antMatchers("/member/login", "/member/join").permitAll()
-                // join과 login을 제외한 모든 post요청, delete요청, put요청은 인가 과정 없이 접근 불가
+                // join과 login을 제외한 모든 Get요청, post요청, delete요청, patch/put요청은 인가 과정 없이 접근 불가
+                .antMatchers(HttpMethod.GET).authenticated()
                 .antMatchers(HttpMethod.POST).authenticated()
                 .antMatchers(HttpMethod.DELETE).authenticated()
+                .antMatchers(HttpMethod.PATCH).authenticated()
                 .antMatchers(HttpMethod.PUT).authenticated().and()
                 // session에 대한 설정
                 .sessionManagement()
