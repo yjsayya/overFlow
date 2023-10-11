@@ -1,5 +1,6 @@
 package com.example.overflow.entity;
 
+import com.example.overflow.auditingEntity.AuditingEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -20,7 +21,7 @@ import java.util.Objects;
 })
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Comment {
+public class Comment extends AuditingEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
@@ -39,25 +40,6 @@ public class Comment {
     @JoinColumn(name="question_id")
     private Question question;
 
-
-
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDate createdAt;
-
-    @CreatedBy
-    @Column(nullable = false, updatable = false)
-    private String createdBy;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDate updatedAt;
-
-    @LastModifiedBy
-    @Column(nullable = false, length = 100)
-    private String updatedBy;
 
 
     protected Comment() {}

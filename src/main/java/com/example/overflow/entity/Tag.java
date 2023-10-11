@@ -25,6 +25,9 @@ public class Tag {
     @Setter @Column(nullable = false)
     private String content;
 
+    @Setter @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private Integer tagMentionCount;
+
     // 연관 관계 매서드
     @OneToMany(mappedBy = "tag")
     private List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
@@ -32,7 +35,8 @@ public class Tag {
     @OneToMany(mappedBy = "tag")
     private List<TagOnAnswer> tagOnAnswers = new ArrayList<>();
 
-
-
+    public static void addMentionCount(Tag tag){
+        tag.tagMentionCount += 1;
+    }
 
 }

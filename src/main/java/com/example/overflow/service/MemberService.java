@@ -1,16 +1,20 @@
 package com.example.overflow.service;
 
+import com.example.overflow.advice.BusinessLogicException;
+import com.example.overflow.advice.ExceptionCode;
 import com.example.overflow.entity.Member;
 import com.example.overflow.error.ErrorCode;
 import com.example.overflow.error.OverflowApplicationException;
 import com.example.overflow.repository.MemberRepository;
-import com.example.overflow.util.JwtTokenUtils;
+import com.example.overflow.config.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +65,11 @@ public class MemberService {
     public Member findUserByUserName(String userName) throws UsernameNotFoundException {
         return memberRepository.findByUserName(userName).orElseThrow(() ->
                 new OverflowApplicationException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
+    }
+
+    public Member findMemberById(Integer memberId) { //질문삭제전에 작성자 확인 위에꺼 써도 될지 몰라서 만들었어요
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        return optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
 

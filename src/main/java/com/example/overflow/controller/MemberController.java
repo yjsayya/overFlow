@@ -31,5 +31,4 @@ public class MemberController {
         return new MemberLoginResponseDto(token);
     }
 
-
 }

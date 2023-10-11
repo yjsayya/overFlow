@@ -1,19 +1,18 @@
 package com.example.overflow.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import com.example.overflow.auditingEntity.AuditingEntity;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "content"),
@@ -22,79 +21,68 @@ import java.util.Objects;
 })
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Question {
+public class Question extends AuditingEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="question_id")
-    private Integer id;
+    private Integer questionId;
 
-
-    @Setter @Column(nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Setter @Column(nullable = false, length = 10_000)
+    @Column(nullable = false, length = 10_000)
     private String content;
 
+    @Column(nullable = false)
+    private int questionViews; //조회수
+
+    @Column(nullable = false)
+    private int questionVotes; //투표수
+
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int answerCount; // 답변 개수
+
     // 연관 관계 메서드
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
 
 //    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
 //    private List<Comment> commentList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-//    private List<Vote> voteList = new ArrayList<>();
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Vote> votes = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-//    private List<Answer> answerList = new ArrayList<>();
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Answer> answerList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-//    private List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
-
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDate createdAt;
-
-    @CreatedBy
-    @Column(nullable = false, updatable = false)
-    private String createdBy;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDate updatedAt;
-
-    @LastModifiedBy
-    @Column(nullable = false, length = 100)
-    private String updatedBy;
-
-
-    protected Question() {}
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
 
     private Question(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-    public Question of(String title, String content) {
-        return new Question(title, content);
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
-        return Objects.equals(id, question.id);
+        return Objects.equals(questionId, question.questionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(questionId);
     }
 
+    public void addAnswersCount() {
+        answerCount += 1;
+    }
+
+    public void subtractAnswersCount() {
+        answerCount -= 1;
+    }
 
 }
