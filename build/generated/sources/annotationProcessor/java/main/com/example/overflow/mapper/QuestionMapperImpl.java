@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-21T14:28:21+0900",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.2.1.jar, environment: Java 11.0.19 (Amazon.com Inc.)"
+    date = "2023-10-17T11:10:50+0900",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.2.1.jar, environment: Java 11.0.18 (Oracle Corporation)"
 )
 @Component
 public class QuestionMapperImpl implements QuestionMapper {
@@ -59,6 +59,8 @@ public class QuestionMapperImpl implements QuestionMapper {
         questionResponseDto.setContent( question.getContent() );
         questionResponseDto.setCreatedAt( question.getCreatedAt() );
         questionResponseDto.setUpdatedAt( question.getUpdatedAt() );
+        questionResponseDto.setCreatedBy( question.getCreatedBy() );
+        questionResponseDto.setUpdatedBy( question.getUpdatedBy() );
         questionResponseDto.setQuestionViews( question.getQuestionViews() );
         questionResponseDto.setQuestionVotes( question.getQuestionVotes() );
         questionResponseDto.setAnswerCount( question.getAnswerCount() );

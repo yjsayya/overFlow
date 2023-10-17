@@ -15,7 +15,7 @@ public class Vote {
     private Integer id;
 
     @Column
-    private int Upvote;
+    private int upvote;
 
     // 연관 관계 메서드
     @ManyToOne

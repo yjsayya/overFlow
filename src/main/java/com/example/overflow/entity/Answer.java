@@ -26,9 +26,9 @@ public class Answer extends AuditingEntity {
     private String content;
 
     // 연관관계
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name="member_id")
-//    private Member member;
+    @ManyToOne(optional = false)
+    @JoinColumn(name="member_id")
+    private Member member;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="question_id")

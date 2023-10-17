@@ -17,7 +17,6 @@ public interface AnswerMapper {
     Answer answerCreateRequestToAnswer(AnswerCreateRequest answerCreateRequest);
     Answer answerUpdateRequestToAnswer(AnswerUpdateRequest answerUpdateRequest);
     AnswerCreateResponse answerToCreateResponse(Answer answer);
-
     AnswerUpdateResponse answerToUpdateResponse(Answer answer);
     List<AnswerCreateResponse> answerToResponse(List<Answer> answerList);
 
