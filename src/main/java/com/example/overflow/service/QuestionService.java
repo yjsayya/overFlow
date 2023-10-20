@@ -2,10 +2,13 @@ package com.example.overflow.service;
 
 import com.example.overflow.advice.BusinessLogicException;
 import com.example.overflow.advice.ExceptionCode;
+import com.example.overflow.dto.request.QuestionPostDto;
+import com.example.overflow.dto.response.QuestionResponseDto;
 import com.example.overflow.entity.Member;
 import com.example.overflow.entity.Question;
 import com.example.overflow.entity.Tag;
 import com.example.overflow.entity.TagOnQuestion;
+import com.example.overflow.mapper.QuestionMapper;
 import com.example.overflow.repository.MemberRepository;
 import com.example.overflow.repository.QuestionRepository;
 import com.example.overflow.repository.TagRepository;
@@ -29,21 +32,60 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
+    private final QuestionMapper mapper;
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
 
-    public Question createQuestion(Integer memberId, Question question, List<String> tagNames) {
-        // 맴버가 존재하는지 검사하고 없으면 에러
+//    public Question createQuestion(Integer memberId, Question question, List<String> tagNames) {
+//        // 맴버가 존재하는지 검사하고 없으면 에러
+//        Optional<Member> optionalMember = memberRepository.findById(memberId);
+//        if (optionalMember.isEmpty()) {
+//            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+//        }
+//        question.setMember(optionalMember.get());
+//
+//        // 태그를 검사하고 매핑
+//        List<Tag> tags = new ArrayList<>();
+//
+//        for (String tagName : tagNames) {
+//            Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
+//            if (optionalTag.isPresent()) {
+//                Tag tag = optionalTag.get();
+//                tag.setTagMentionCount(tag.getTagMentionCount() + 1);
+//                tagRepository.save(tag);
+//                tags.add(tag);
+//            } else {
+//                throw new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND);
+//            }
+//        }
+//
+//        // 질문과 연관된 태그 목록을 설정합니다.
+//        List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
+//        for (Tag tag : tags) {
+//            TagOnQuestion tagOnQuestion = new TagOnQuestion();
+//            tagOnQuestion.setTag(tag);
+//            tagOnQuestion.setQuestion(question);
+//            tagOnQuestions.add(tagOnQuestion);
+//        }
+//        question.setTagOnQuestions(tagOnQuestions);
+//
+//        return questionRepository.save(question);
+//    }
+
+    public QuestionResponseDto createQuestion(Integer memberId, QuestionPostDto request) {
+        // 1. 맴버가 존재하는지 검사하고 없으면 에러
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         if (optionalMember.isEmpty()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
+
+        Question question = mapper.questionPostDtoToQuestion(request);
         question.setMember(optionalMember.get());
 
-        // 태그를 검사하고 매핑
+        // 2. 태그를 검사하고 매핑
         List<Tag> tags = new ArrayList<>();
 
-        for (String tagName : tagNames) {
+        for (String tagName : request.getTagNames()) {
             Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
             if (optionalTag.isPresent()) {
                 Tag tag = optionalTag.get();
@@ -55,7 +97,7 @@ public class QuestionService {
             }
         }
 
-        // 질문과 연관된 태그 목록을 설정합니다.
+        // 3. 질문과 연관된 태그 목록을 설정합니다.
         List<TagOnQuestion> tagOnQuestions = new ArrayList<>();
         for (Tag tag : tags) {
             TagOnQuestion tagOnQuestion = new TagOnQuestion();
@@ -65,7 +107,12 @@ public class QuestionService {
         }
         question.setTagOnQuestions(tagOnQuestions);
 
-        return questionRepository.save(question);
+        // 4. 질문을 저장하고 Response DTO로 변환
+        Question createdQuestion = questionRepository.save(question);
+        QuestionResponseDto response = mapper.questionToResponseDto(createdQuestion);
+        response.setTagNames(request.getTagNames());
+
+        return response;
     }
 
 

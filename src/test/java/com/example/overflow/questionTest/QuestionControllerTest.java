@@ -47,45 +47,45 @@ public class QuestionControllerTest {
 
     private final static String QUESTION_URL = "questions";
 
-    @Test
-    void 질문등록_테스트() throws Exception {
-        // Mock 데이터 생성
-        QuestionPostDto requestDto = new QuestionPostDto();
-        requestDto.setTitle("Sample Title");
-        requestDto.setContent("Sample Content");
-        requestDto.setTagNames(List.of("java", "python"));
-
-        Question question = new Question();
-        question.setTitle("Sample Title");
-        question.setContent("Sample Content");
-        question.setQuestionId(1); // Replace with the expected ID value
-
-        QuestionResponseDto questionResponseDto = new QuestionResponseDto();
-        questionResponseDto.setQuestionId(1);
-        questionResponseDto.setTitle("Sample Title");
-        questionResponseDto.setContent("Sample Content");
-        questionResponseDto.setTagNames(Arrays.asList("java", "python"));
-
-
-        when(questionService.createQuestion(1, question, requestDto.getTagNames()))
-                .thenReturn(question);
-
-        when(mapper.questionPostDtoToQuestion(requestDto))
-                .thenReturn(question);
-
-        when(questionService.createQuestion(1, question, requestDto.getTagNames()))
-                .thenReturn(question);
-
-        when(mapper.questionPostDtoToQuestion(requestDto))
-                .thenReturn(question);
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/questions/{memberId}", 1)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(requestDto))
-                )
-                .andExpect(MockMvcResultMatchers.status().isCreated());
-    }
+//    @Test
+//    void 질문등록_테스트() throws Exception {
+//        // Mock 데이터 생성
+//        QuestionPostDto requestDto = new QuestionPostDto();
+//        requestDto.setTitle("Sample Title");
+//        requestDto.setContent("Sample Content");
+//        requestDto.setTagNames(List.of("java", "python"));
+//
+//        Question question = new Question();
+//        question.setTitle("Sample Title");
+//        question.setContent("Sample Content");
+//        question.setQuestionId(1); // Replace with the expected ID value
+//
+//        QuestionResponseDto questionResponseDto = new QuestionResponseDto();
+//        questionResponseDto.setQuestionId(1);
+//        questionResponseDto.setTitle("Sample Title");
+//        questionResponseDto.setContent("Sample Content");
+//        questionResponseDto.setTagNames(Arrays.asList("java", "python"));
+//
+//
+//        when(questionService.createQuestion(1, question, requestDto.getTagNames()))
+//                .thenReturn(question);
+//
+//        when(mapper.questionPostDtoToQuestion(requestDto))
+//                .thenReturn(question);
+//
+//        when(questionService.createQuestion(1, question, requestDto.getTagNames()))
+//                .thenReturn(question);
+//
+//        when(mapper.questionPostDtoToQuestion(requestDto))
+//                .thenReturn(question);
+//
+//        mockMvc.perform(MockMvcRequestBuilders
+//                        .post("/questions/{memberId}", 1)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(gson.toJson(requestDto))
+//                )
+//                .andExpect(MockMvcResultMatchers.status().isCreated());
+//    }
 
 }

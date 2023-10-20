@@ -27,17 +27,26 @@ public class QuestionController {
     private final QuestionService questionService;
     private final QuestionMapper mapper;
 
+//    @PostMapping("/{memberId}")
+//    public ResponseEntity postQuestion(@PathVariable("memberId") @Positive Integer memberId,
+//                                       @Valid @RequestBody QuestionPostDto requestBody) {
+//        Question question = mapper.questionPostDtoToQuestion(requestBody);
+//        List<String> tagNames = requestBody.getTagNames();
+//        Question createdQuestion = questionService.createQuestion(memberId, question, tagNames);
+//
+//        QuestionResponseDto response = mapper.questionToResponseDto(createdQuestion);
+//        response.setTagNames(tagNames);
+//
+//        URI location = UriCreator.createUri(QUESTION_URL, createdQuestion.getQuestionId());
+//        return ResponseEntity.created(location).body(response);
+//    }
+
     @PostMapping("/{memberId}")
-    public ResponseEntity postQuestion(@PathVariable("memberId") @Positive Integer memberId,
-                                       @Valid @RequestBody QuestionPostDto requestBody) {
-        Question question = mapper.questionPostDtoToQuestion(requestBody);
-        List<String> tagNames = requestBody.getTagNames();
-        Question createdQuestion = questionService.createQuestion(memberId, question, tagNames);
+    public ResponseEntity<QuestionResponseDto> postQuestion(@PathVariable("memberId") @Positive Integer memberId,
+                                                            @Valid @RequestBody QuestionPostDto request) {
+        QuestionResponseDto response = questionService.createQuestion(memberId, request);
 
-        QuestionResponseDto response = mapper.questionToResponseDto(createdQuestion);
-        response.setTagNames(tagNames);
-
-        URI location = UriCreator.createUri(QUESTION_URL, createdQuestion.getQuestionId());
+        URI location = UriCreator.createUri(QUESTION_URL, response.getQuestionId());
         return ResponseEntity.created(location).body(response);
     }
 
